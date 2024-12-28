@@ -60,7 +60,7 @@ class LsTreeCommand {
             const type = mode === "40000" ? "tree" : "blob";
             entries.push({ mode, type, objectSha, name });
         }
-          
+
         // Print output based on flag
         if (flag === '--name-only') {
             entries.forEach(({ name }) => process.stdout.write(`${name}\n`));
