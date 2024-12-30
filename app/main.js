@@ -3,7 +3,7 @@ const path = require('path');
 const GitClient = require('./git/client');
 
 const gitClient = new GitClient();
-const { CatFileCommand, HashObjectCommand, LsTreeCommand, WriteTreeCommand, CommitTreeCommand } = require('./git/commands');
+const { CatFileCommand, HashObjectCommand, LsTreeCommand, WriteTreeCommand, CommitTreeCommand, CloneCommand } = require('./git/commands');
 
 const command = process.argv[2];
 
@@ -26,17 +26,22 @@ switch (command) {
     case "commit-tree":
         handleCommitTreeCommand();
         break;
+    case "clone":
+        handleCloneCommand();
+        break;
     default:
         throw new Error(`Unknown command ${command}`);
 }
 
-function createGitDirectory() {
-    fs.mkdirSync(path.join(process.cwd(), ".git"), { recursive: true });
-    fs.mkdirSync(path.join(process.cwd(), ".git", "objects"), { recursive: true });
-    fs.mkdirSync(path.join(process.cwd(), ".git", "refs"), { recursive: true });
 
-    fs.writeFileSync(path.join(process.cwd(), ".git", "HEAD"), "ref: refs/heads/main\n");
-    console.log("Initialized git directory");
+function createGitDirectory(repoPath = process.cwd()) {
+    const gitDir = path.join(repoPath, '.git');
+    fs.mkdirSync(gitDir, { recursive: true });
+    fs.mkdirSync(path.join(gitDir, 'objects'), { recursive: true });
+    fs.mkdirSync(path.join(gitDir, 'refs'), { recursive: true });
+
+    fs.writeFileSync(path.join(gitDir, 'HEAD'), 'ref: refs/heads/main\n');
+    console.log(`Initialized git directory at ${gitDir}`);
 }
 
 function handleCatFileCommand() {
@@ -86,5 +91,27 @@ function handleCommitTreeCommand() {
     const commitMessage = process.argv[7];
 
     const command = new CommitTreeCommand(tree, commitSHA, commitMessage);
+    gitClient.run(command);
+}
+
+function handleCloneCommand() {
+    const remoteUrl = process.argv[3];
+    const destinationDir = process.argv[4];
+
+    if (!remoteUrl || !destinationDir) {
+        console.error("Usage: clone <remote-url> <destination-directory>");
+        return;
+    }
+
+    const repoPath = path.join(process.cwd(), destinationDir); 
+
+    if (!fs.existsSync(repoPath)) {
+        fs.mkdirSync(repoPath, { recursive: true });
+        console.log(`Created repository directory at ${repoPath}`);
+    }
+
+
+    // Clone the repository and fetch objects and refs
+    const command = new CloneCommand(remoteUrl, repoPath);
     gitClient.run(command);
 }

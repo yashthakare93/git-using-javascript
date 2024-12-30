@@ -10,6 +10,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "git-using-javascript": "file:"
+    "axios": "^1.7.9",
+    "git-using-javascript": "file:",
+    "simple-git": "^3.27.0"
   }
 }
