@@ -18,3 +18,59 @@ This project is a custom implementation of Git functionality, providing a set of
 
 - **Clone Repository** (`clone`): Clone a repository from a remote URL to a local directory.
 
+## Usage
+After installation, you can use the various Git functionalities by running commands in your terminal. Here are some examples:
+
+## Usage
+
+After installation, you can use the various Git functionalities by running commands in your terminal. Here are some examples:
+
+- **Initialize a Git Repository**:
+
+    ```bash
+    gitjs init
+    ```
+
+- **Hash a File**:
+
+    ```bash
+    gitjs hash-object <file-path>
+    ```
+
+- **Clone a Remote Repository**:
+
+    ```bash
+    gitjs clone <repository-url> <directory>
+    ```
+
+- **Commit a Tree**:
+
+    ```bash
+    gitjs commit-tree <tree_sha> -p <commit_sha> -m "<message>"
+    ```
+
+- **Write a Tree**:
+
+    ```bash
+    gitjs write-tree <sha>
+    ```
+
+- **List Tree with `--name-only`**:
+
+    ```bash
+    gitjs ls-tree --name-only <sha>
+    ```
+
+- **Hash a File and Store It**:
+
+    ```bash
+    gitjs hash-object -w <filepath>
+    ```
+
+- **View Git Object Information**:
+
+    ```bash
+    gitjs cat-file -p <commitSHA>
+    ```
+
+  

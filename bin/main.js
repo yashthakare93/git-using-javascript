@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require('path');
-const GitClient = require('./git/client');
+const GitClient = require('../git/client');
 
 const gitClient = new GitClient();
-const { CatFileCommand, HashObjectCommand, LsTreeCommand, WriteTreeCommand, CommitTreeCommand, CloneCommand } = require('./git/commands');
+const { CatFileCommand, HashObjectCommand, LsTreeCommand, WriteTreeCommand, CommitTreeCommand, CloneCommand } = require('../git/commands');
 
 const command = process.argv[2];
 
